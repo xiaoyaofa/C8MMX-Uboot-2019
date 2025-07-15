@@ -644,12 +644,17 @@ struct display_info_t const displays[] = {{
 size_t display_count = ARRAY_SIZE(displays);
 #endif
 
+#define TC358775_RESET_PIN IMX_GPIO_NR(1, 13)
 int board_late_init(void)
 {
 #ifdef CONFIG_ENV_IS_IN_MMC
 	board_late_mmc_env_init();
 #endif
 
+	gpio_request(TC358775_RESET_PIN, "TC358775_RESET_PIN");
+	gpio_direction_output(TC358775_RESET_PIN, 0);
+	mdelay(20);
+	gpio_direction_output(TC358775_RESET_PIN, 1);
 	return 0;
 }
 
